@@ -38,11 +38,12 @@ class PragraphProcessorHandler(http.server.BaseHTTPRequestHandler):
         self.send_header("Content-type", "text/html")
         self.end_headers()
         self.wfile.write(bytes(''.join(str(d) for d in vector), 'utf-8'))
+        print("Vectorization request finished.", PORT)
 
 PORT = 1020
 
 with socketserver.TCPServer(("", PORT), PragraphProcessorHandler) as httpd:
-    print("serving at port", PORT)
+    print("Serving at port", PORT)
     httpd.serve_forever()
 
 
