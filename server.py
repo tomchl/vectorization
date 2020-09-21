@@ -1,16 +1,12 @@
 import http.server
 import socketserver
 
-from absl import logging
-logging.set_verbosity(logging.ERROR)
 
-import tensorflow.compat.v1 as tf
+import tensorflow as tf
 import tensorflow_hub as hub
-import numpy as np
-
-
+import tensorflow.compat.v1 as tf
+#To make tf 2.0 compatible with tf1.0 code, we disable the tf2.0 functionalities
 tf.disable_eager_execution()
-
 
 class PragraphProcessor():
     def __init__(self):
