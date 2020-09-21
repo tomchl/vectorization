@@ -45,4 +45,5 @@ with socketserver.TCPServer(("", PORT), PragraphProcessorHandler) as httpd:
 
 
 
-
+#docker pull tomchl/vectorizationpyserver
+#docker run --publish=1020:1020 vectorization
