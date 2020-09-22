@@ -60,7 +60,7 @@ class PragraphProcessorHandler(http.server.BaseHTTPRequestHandler):
 
             similarity = globalPragraphProcessor.get_similarity(body)
 
-            self.send_response(201)
+            self.send_response(200)
             self.send_header("Content-type", "text/html")
             self.end_headers()
             self.wfile.write(bytes(str(similarity), 'utf-8'))
