@@ -10,16 +10,21 @@ tf.disable_eager_execution()
 
 class PragraphProcessor():
     def __init__(self):
-        module_url = "https://tfhub.dev/google/universal-sentence-encoder/2"
-        self.embed = hub.Module(module_url)
-    
+        self.g = tf.Graph()
+        with self.g.as_default():
+            # We will be feeding 1D tensors of text into the graph.
+            self.text_input = tf.placeholder(dtype=tf.string, shape=[None])
+            embed = hub.Module("https://tfhub.dev/google/universal-sentence-encoder/2")
+            self.embedded_text = embed(self.text_input)
+            init_op = tf.group([tf.global_variables_initializer(), tf.tables_initializer()])
+        self.g.finalize()
+        self.session = tf.Session(graph=self.g)
+        self.session.run(init_op)
+
     def get_vector(self, paragraph):
         print("Input for vector calculation: {}".format(paragraph))
-        with tf.Session() as session:
-            session.run([tf.global_variables_initializer(), tf.tables_initializer()])
-            paragraph_embedding = session.run(self.embed([paragraph]))
-
-            return paragraph_embedding
+        paragraph_embedding = self.session.run(self.embedded_text, feed_dict={self.text_input: [paragraph]})
+        return paragraph_embedding
 
 globalPragraphProcessor = PragraphProcessor()
 
